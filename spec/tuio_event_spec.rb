@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/spec_helper'
 
-describe "tuio messages" do
+describe "tuio objects" do
   before :each do
     setup_server
   end
