@@ -6,10 +6,10 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["aberant"]
-  s.date = %q{2009-03-19}
+  s.date = %q{2009-03-20}
   s.email = %q{qzzzq1@gmail.com}
   s.extra_rdoc_files = ["README"]
-  s.files = ["VERSION.yml", "spec/spec_helper.rb", "spec/tuio_event_spec.rb", "README"]
+  s.files = ["VERSION.yml", "lib/tuio_client.rb", "spec/spec_helper.rb", "spec/tuio_event_spec.rb", "README"]
   s.has_rdoc = true
   s.homepage = %q{http://github.com/aberant/tuio_ruby}
   s.rdoc_options = ["--inline-source", "--charset=UTF-8"]
