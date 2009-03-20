@@ -12,7 +12,7 @@ describe "tuio messages" do
     @server.tuio_objects[49][:class_id].should == 25
   end
   
-  it 'should only keep alive the objects the server says are alive' do
+  it 'should only keep alive the objects the client says are alive' do
     send_message( '/tuio/2Dobj', "set", 49, 25, 0.38, 0.35, 3.14, 0.0, 0.0, 0.0, 0.0, 0.0 )
     send_message( '/tuio/2Dobj', "set", 51, 26, 0.12, 0.50, 3.14, 0.0, 0.0, 0.0, 0.0, 0.0 )
     
@@ -42,7 +42,7 @@ describe "tuio_cursors" do
     @server.tuio_cursors.size.should == 2
   end
   
-  it 'should only keep alive the cursors the server says are alive' do
+  it 'should only keep alive the cursors the client says are alive' do
     send_message( '/tuio/2Dcur', "set", 22, 0.38, 0.35, 0.0, 0.0, 0.0 )
     send_message( '/tuio/2Dcur', "set", 27, 0.12, 0.50, 0.0, 0.0, 0.0 )
     
