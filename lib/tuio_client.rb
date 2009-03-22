@@ -22,8 +22,6 @@ class TUIOClient
         update_tuio_objects( args ) 
       when "alive"
         keep_alive( :tuio_objects, args )
-      when "fseq"
-        puts args
       end
     end
 
