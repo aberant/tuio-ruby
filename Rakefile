@@ -12,10 +12,10 @@ end
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name = "tuio_ruby"
+    gem.name = "tuio-ruby"
     gem.summary = %Q{inital gem}
     gem.email = "qzzzq1@gmail.com"
-    gem.homepage = "http://github.com/aberant/tuio_ruby"
+    gem.homepage = "http://github.com/aberant/tuio-ruby"
     gem.authors = ["aberant"]
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
