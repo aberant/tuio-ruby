@@ -7,7 +7,6 @@ class TUIOClient
   include OSC
   
   def initialize( args = {} )
-    @host = args[:host] || 'localhost'
     @port = args[:port] || 3333
 
     @tuio_objects = { }
@@ -23,6 +22,8 @@ class TUIOClient
         update_tuio_objects( args ) 
       when "alive"
         keep_alive( :tuio_objects, args )
+      when "fseq"
+        puts args
       end
     end
 
@@ -61,10 +62,8 @@ class TUIOClient
   end
   
 private
-  #TODO clean up these, each_with_index methinks
   def cur_args_to_hash( args )
-    {
-      :session_id  => args[0],
+    { :session_id  => args[0],
       :x_pos       => args[1],
       :y_pos       => args[2],
       :x_move      => args[3],
