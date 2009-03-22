@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{tuio_ruby}
+  s.name = %q{tuio-ruby}
   s.version = "0.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files = ["README"]
   s.files = ["VERSION.yml", "lib/tuio_client.rb", "spec/spec_helper.rb", "spec/tuio_event_spec.rb", "README"]
   s.has_rdoc = true
-  s.homepage = %q{http://github.com/aberant/tuio_ruby}
+  s.homepage = %q{http://github.com/aberant/tuio-ruby}
   s.rdoc_options = ["--inline-source", "--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.1}
