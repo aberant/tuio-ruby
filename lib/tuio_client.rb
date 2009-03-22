@@ -39,7 +39,7 @@ class TUIOClient
   end
   
   def start
-    Thread.fork do
+    Thread.new do
       @osc.run
     end
   end
