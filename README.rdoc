@@ -2,9 +2,18 @@
 
 http://www.tuio.org/
 
+== REQUIREMENTS:
 
-== Copyright
+  You will need the OSC gem
+  
+  [sudo] gem install osc
 
-Copyright (c) 2009 aberant. See LICENSE for details.
+== INSTALL:
+
+  [sudo] gem install aberant-tuio-ruby
+  
+== COPYRIGHT:
+
+Copyright (c) 2009 Colin Harris. See LICENSE for details.
 
 
