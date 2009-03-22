@@ -4,7 +4,7 @@ http://www.tuio.org/
 
 == REQUIREMENTS:
 
-  You will need the OSC gem
+You will need the OSC gem
   
   [sudo] gem install osc
 
