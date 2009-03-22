@@ -17,35 +17,35 @@ class TUIOClient
     # and i obviously need something less hackish for 1.8   
     @osc = nil
     
-    Thread.fork do
-      @osc = OSC::SimpleServer.new(@port)
+    @osc = OSC::SimpleServer.new(@port)
+    
+    @osc.add_method '/tuio/2Dobj', nil do |msg|
+      args = msg.to_a
       
-      @osc.add_method '/tuio/2Dobj', nil do |msg|
-        args = msg.to_a
-        
-        case args.shift
-        when "set"
-          update_tuio_objects( args ) 
-        when "alive"
-          keep_alive( :tuio_objects, args )
-        end
+      case args.shift
+      when "set"
+        update_tuio_objects( args ) 
+      when "alive"
+        keep_alive( :tuio_objects, args )
       end
+    end
 
-      @osc.add_method '/tuio/2Dcur', nil do |msg|
-        args = msg.to_a
+    @osc.add_method '/tuio/2Dcur', nil do |msg|
+      args = msg.to_a
 
-        case args.shift
-        when "set"
-          update_tuio_cursors args
-        when "alive"
-          keep_alive( :tuio_cursors, args )
-        end
+      case args.shift
+      when "set"
+        update_tuio_cursors args
+      when "alive"
+        keep_alive( :tuio_cursors, args )
       end
     end
   end
   
   def start
-    @osc.run
+    Thread.fork do
+      @osc.run
+    end
   end
   
   def tuio_objects
