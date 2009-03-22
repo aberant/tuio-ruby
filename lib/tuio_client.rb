@@ -13,10 +13,6 @@ class TUIOClient
     @tuio_objects = { }
     @tuio_cursors = { }
     
-    # This will not work in ruby 1.9
-    # and i obviously need something less hackish for 1.8   
-    @osc = nil
-    
     @osc = OSC::SimpleServer.new(@port)
     
     @osc.add_method '/tuio/2Dobj', nil do |msg|
