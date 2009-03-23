@@ -14,7 +14,7 @@ class TUIOClient
     
     @osc = OSC::SimpleServer.new(@port)
     
-    @osc.add_method '/tuio/2Dobj', nil do |msg|
+    @osc.add_method '/tuio/2Dobj' do |msg|
       args = msg.to_a
       
       case args.shift
@@ -25,7 +25,7 @@ class TUIOClient
       end
     end
 
-    @osc.add_method '/tuio/2Dcur', nil do |msg|
+    @osc.add_method '/tuio/2Dcur' do |msg|
       args = msg.to_a
 
       case args.shift
