@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/spec_helper'
 describe "tuio objects" do
   before :each do
     setup_server
-  end
+  end 
   
   it 'should update tracking' do
     send_message( '/tuio/2Dobj', "set", 49, 25, 0.38, 0.35, 3.14, 0.0, 0.0, 0.0, 0.0, 0.0 )
@@ -19,6 +19,16 @@ describe "tuio objects" do
     send_message( '/tuio/2Dobj', "alive", 49)
     
     @server.tuio_objects.size.should == 1
+  end
+  
+  it "should call the update hooks" do
+    @server.on_object_update do | objects |
+      raise "update hook called!"
+    end
+    
+    lambda {
+      send_message( '/tuio/2Dobj', "set", 49, 25, 0.38, 0.35, 3.14, 0.0, 0.0, 0.0, 0.0, 0.0 )
+    }.should raise_error
   end
   
 end
@@ -50,6 +60,15 @@ describe "tuio_cursors" do
     
     @server.tuio_cursors.size.should == 1
     @server.tuio_cursors[22][:session_id].should == 22
+  end
+  
+  it "should call the update hooks" do
+    @server.on_cursor_update do | objects |
+      raise "update hook called!"
+    end
     
+    lambda {
+      send_message( '/tuio/2Dcur', "set", 27, 0.12, 0.50, 0.0, 0.0, 0.0 )
+    }.should raise_error
   end
 end

@@ -59,6 +59,14 @@ class TUIOClient
     @tuio_cursors[id]
   end
   
+  def on_object_update( &obj_update_blk )
+    @obj_update_blk = obj_update_blk
+  end
+  
+  def on_cursor_update( &cur_update_blk )
+    @cur_update_blk = cur_update_blk
+  end
+  
 private
   def cur_args_to_hash( args )
     { :session_id  => args[0],
@@ -88,11 +96,13 @@ private
     tuio_object = obj_args_to_hash( args )
     
     @tuio_objects[tuio_object[:session_id]] = tuio_object
+    @obj_update_blk.call( @tuio_objects ) if @obj_update_blk
   end
   
   def update_tuio_cursors( args )
     tuio_cursor = cur_args_to_hash( args )
     @tuio_cursors[tuio_cursor[:session_id]] = tuio_cursor
+    @cur_update_blk.call( @tuio_cursors ) if @cur_update_blk
   end
   
   def keep_alive( type, session_ids )
