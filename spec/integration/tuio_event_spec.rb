@@ -1,39 +1,47 @@
 require File.join( File.dirname(__FILE__) , '..', 'spec_helper' )
 
-describe "tuio objects" do
+describe "tuio object" do
   before :each do
     setup_server
   end 
   
-  it 'should update tracking' do
-    pending( "not finished with implementation")
-    send_message( '/tuio/2Dobj', "set", 49, 25, 0.38, 0.35, 3.14, 0.0, 0.0, 0.0, 0.0, 0.0 )
+  describe "in general" do
+    it "should call the update hooks" do
+      @server.on_object_update do | objects |
+        raise "update hook called!"
+      end
     
-    @server.tuio_objects.size.should == 1
-    @server.tuio_objects[49][:class_id].should == 25
+      lambda {
+        send_message( '/tuio/2Dobj', "set", 49, 25, 0.38, 0.35, 3.14, 0.0, 0.0, 0.0, 0.0, 0.0 )
+      }.should raise_error
+    end
   end
   
-  it 'should only keep alive the objects the client says are alive' do
-    pending( "not finished with implementation")
-    
-    send_message( '/tuio/2Dobj', "set", 49, 25, 0.38, 0.35, 3.14, 0.0, 0.0, 0.0, 0.0, 0.0 )
-    send_message( '/tuio/2Dobj', "set", 51, 26, 0.12, 0.50, 3.14, 0.0, 0.0, 0.0, 0.0, 0.0 )
-    
-    send_message( '/tuio/2Dobj', "alive", 49)
-    
-    @server.tuio_objects.size.should == 1
-  end
-  
-  it "should call the update hooks" do
-    @server.on_object_update do | objects |
-      raise "update hook called!"
+  describe "receiving message" do
+    before :each do
+      send_message( '/tuio/2Dobj', "set", 49, 25, 0.38, 0.35, 3.14, 0.0, 0.0, 0.0, 0.0, 0.0 )
     end
     
-    lambda {
-      send_message( '/tuio/2Dobj', "set", 49, 25, 0.38, 0.35, 3.14, 0.0, 0.0, 0.0, 0.0, 0.0 )
-    }.should raise_error
-  end
+    describe "set" do
+      it 'should update tracking' do
+        @server.tuio_objects.size.should == 1
+        @server.tuio_objects[49].fiducial_id.should == 25
+      end
+    end
   
+    describe "alive" do
+      it 'should only keep alive the objects the client says are alive' do    
+        send_message( '/tuio/2Dobj', "set", 51, 26, 0.12, 0.50, 3.14, 0.0, 0.0, 0.0, 0.0, 0.0 )
+        send_message( '/tuio/2Dobj', "alive", 49)
+
+        @server.tuio_objects.size.should == 1
+      end
+    end
+    
+    describe "fseq" do
+      it "should probably have a test!"
+    end
+  end
 end
 
 describe "tuio_cursors" do

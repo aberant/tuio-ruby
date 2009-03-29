@@ -5,10 +5,6 @@ require 'osc'
 class TuioClient
   include OSC
   
-  # getting a warning in tests about this already being defined
-  # dunno exactly why, until then we need this
-  SESSION_ID = 0 unless defined?( SESSION_ID )
-  
   def initialize( args = {} )
     @port = args[:port] || 3333
 
@@ -99,18 +95,31 @@ private
     }
   end
   
+  def session_id_from( args )
+    args[0]
+  end
+  
+  def new_object_params_from( args )
+    args[0..4]
+  end
+  
+  def tuio_object_previously_tracked?( session_id )
+    @tuio_objects.has_key?( session_id )
+  end
+  
+  def grab_tuio_object_by( session_id )
+    @tuio_objects[session_id]
+  end
+  
   def update_tuio_objects( args )
-    # obj_args = obj_args_to_hash( args )
-
-    if @tuio_objects.has_key?( args[SESSION_ID] )
-      # update
-      @tuio_objects[args[SESSION_ID]].update( *args )
+    session_id = session_id_from( args )
+    
+    if tuio_object_previously_tracked?( session_id )
+      grab_tuio_object_by( session_id ).update( *args )
     else
-      #new
-      @tuio_objects[args[SESSION_ID]] = TuioObject.new( *args )
+      @tuio_objects[session_id] = TuioObject.new( *new_object_params_from( args ) )
     end
     
-    # @tuio_objects[tuio_object[:session_id]] = tuio_object
     @obj_update_blk.call( @tuio_objects ) if @obj_update_blk
   end
   
