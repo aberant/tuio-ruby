@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/spec_helper'
+require File.join( File.dirname(__FILE__) , '..', 'spec_helper' )
 
 describe "tuio objects" do
   before :each do
@@ -6,6 +6,7 @@ describe "tuio objects" do
   end 
   
   it 'should update tracking' do
+    pending( "not finished with implementation")
     send_message( '/tuio/2Dobj', "set", 49, 25, 0.38, 0.35, 3.14, 0.0, 0.0, 0.0, 0.0, 0.0 )
     
     @server.tuio_objects.size.should == 1
@@ -13,6 +14,8 @@ describe "tuio objects" do
   end
   
   it 'should only keep alive the objects the client says are alive' do
+    pending( "not finished with implementation")
+    
     send_message( '/tuio/2Dobj', "set", 49, 25, 0.38, 0.35, 3.14, 0.0, 0.0, 0.0, 0.0, 0.0 )
     send_message( '/tuio/2Dobj', "set", 51, 26, 0.12, 0.50, 3.14, 0.0, 0.0, 0.0, 0.0, 0.0 )
     

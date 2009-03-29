@@ -2,9 +2,12 @@ require 'rubygems'
 require 'osc'
 
 
-
-class TUIOClient
+class TuioClient
   include OSC
+  
+  # getting a warning in tests about this already being defined
+  # dunno exactly why, until then we need this
+  SESSION_ID = 0 unless defined?( SESSION_ID )
   
   def initialize( args = {} )
     @port = args[:port] || 3333
@@ -22,6 +25,8 @@ class TUIOClient
         update_tuio_objects( args ) 
       when "alive"
         keep_alive( :tuio_objects, args )
+      when "fseq"
+        # puts args
       end
     end
 
@@ -33,6 +38,8 @@ class TUIOClient
         update_tuio_cursors args
       when "alive"
         keep_alive( :tuio_cursors, args )
+      when "fseq"
+        #
       end
     end
   end
@@ -93,14 +100,23 @@ private
   end
   
   def update_tuio_objects( args )
-    tuio_object = obj_args_to_hash( args )
+    # obj_args = obj_args_to_hash( args )
+
+    if @tuio_objects.has_key?( args[SESSION_ID] )
+      # update
+      @tuio_objects[args[SESSION_ID]].update( *args )
+    else
+      #new
+      @tuio_objects[args[SESSION_ID]] = TuioObject.new( *args )
+    end
     
-    @tuio_objects[tuio_object[:session_id]] = tuio_object
+    # @tuio_objects[tuio_object[:session_id]] = tuio_object
     @obj_update_blk.call( @tuio_objects ) if @obj_update_blk
   end
   
   def update_tuio_cursors( args )
     tuio_cursor = cur_args_to_hash( args )
+    
     @tuio_cursors[tuio_cursor[:session_id]] = tuio_cursor
     @cur_update_blk.call( @tuio_cursors ) if @cur_update_blk
   end
@@ -117,5 +133,5 @@ private
 end
 
 if $0 == __FILE__
-  TUIOClient.new.start
+  TuioClient.new.start
 end

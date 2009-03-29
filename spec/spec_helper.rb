@@ -2,14 +2,17 @@ require 'rubygems'
 require 'spec'
 require 'rr'
 require 'osc'
-require File.join(File.dirname(__FILE__), '..', 'lib', 'tuio_client')
+
+%w{ point container object client }.each do | type |
+  require File.join( File.dirname( __FILE__ ), '..', 'lib', "tuio_#{type}" )
+end
 
 Spec::Runner.configure do |config|
     config.mock_with RR::Adapters::Rspec
 end
 
 # monkey patch to get at osc core to send messages
-class TUIOClient
+class TuioClient
   def osc
     @osc
   end
@@ -29,5 +32,5 @@ def setup_server
   stub(socket).bind("", 3333)
   stub(UDPSocket).new { socket }
 
-  @server = TUIOClient.new
+  @server = TuioClient.new
 end
