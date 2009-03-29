@@ -111,16 +111,24 @@ private
     @tuio_objects[session_id]
   end
   
+  def track_new_tuio_object_with( session_id, args )
+    @tuio_objects[session_id] = TuioObject.new( *new_object_params_from( args ) )
+  end
+  
+  def trigger_callbacks
+    @obj_update_blk.call( @tuio_objects ) if @obj_update_blk
+  end
+  
   def update_tuio_objects( args )
     session_id = session_id_from( args )
     
     if tuio_object_previously_tracked?( session_id )
       grab_tuio_object_by( session_id ).update( *args )
     else
-      @tuio_objects[session_id] = TuioObject.new( *new_object_params_from( args ) )
+      track_new_tuio_object_with( session_id, args )
     end
     
-    @obj_update_blk.call( @tuio_objects ) if @obj_update_blk
+    trigger_callbacks
   end
   
   def update_tuio_cursors( args )
