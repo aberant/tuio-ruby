@@ -1,4 +1,3 @@
-# require File.join( File.dirname( __FILE__ ), 'tuio_point' )
 class TuioObject < TuioContainer
   attr_accessor :angle, :fiducial_id, :rotation_speed, :rotation_accel
   
@@ -19,5 +18,18 @@ class TuioObject < TuioContainer
     @angle = angle
     @rotation_speed = rotation_speed
     @rotation_accel = rotation_accel
+  end
+  
+  def eql?( args )
+    @session_id     == args[0]  &&
+    @fiducial_id    == args[1]  &&
+    @x_pos          == args[2]  &&
+    @y_pos          == args[3]  &&
+    @angle          == args[4]  &&
+    @x_speed        == args[5]  &&
+    @y_speed        == args[6]  &&
+    @rotation_speed == args[7]  &&
+    @motion_accel   == args[8]  &&
+    @rotation_accel == args[9]
   end
 end

@@ -6,7 +6,7 @@ describe "tuio object" do
   end 
   
   describe "in general" do
-    it "should call the update hooks" do
+    it "should call the update hook" do
       @server.on_object_update do | objects |
         raise "update hook called!"
       end

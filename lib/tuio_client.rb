@@ -71,6 +71,19 @@ class TuioClient
   end
   
 private
+
+  def update_tuio_objects( args )
+    session_id = session_id_from( args )
+  
+    if tuio_object_previously_tracked?( session_id )
+      grab_tuio_object_by( session_id ).update( *args )
+    else
+      track_new_tuio_object_with( session_id, args )
+    end
+  
+    trigger_callbacks
+  end
+
   def cur_args_to_hash( args )
     { :session_id  => args[0],
       :x_pos       => args[1],
@@ -78,20 +91,6 @@ private
       :x_move      => args[3],
       :y_move      => args[4],
       :motion_acc  => args[5],
-    }
-  end
-
-  def obj_args_to_hash( args )
-    { :session_id    =>  args[0],
-      :class_id      =>  args[1],
-      :x_pos         =>  args[2],
-      :y_pos         =>  args[3],
-      :angle         =>  args[4],
-      :x_move        =>  args[5],
-      :y_move        =>  args[6],
-      :angle_move    =>  args[7],
-      :motion_acc    =>  args[8],
-      :rotation_acc  =>  args[9],
     }
   end
   
@@ -117,18 +116,6 @@ private
   
   def trigger_callbacks
     @obj_update_blk.call( @tuio_objects ) if @obj_update_blk
-  end
-  
-  def update_tuio_objects( args )
-    session_id = session_id_from( args )
-    
-    if tuio_object_previously_tracked?( session_id )
-      grab_tuio_object_by( session_id ).update( *args )
-    else
-      track_new_tuio_object_with( session_id, args )
-    end
-    
-    trigger_callbacks
   end
   
   def update_tuio_cursors( args )

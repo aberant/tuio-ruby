@@ -50,6 +50,21 @@ describe TuioObject do
       @to.update( *@args2 )
     end
     
+    it "should be able to compare it's args" do
+      @to.eql?( [
+        @session_id,
+        @fiducial_id,
+        @x_pos2,
+        @y_pos2,
+        @angle2,
+        @x_speed,
+        @y_speed,
+        @rotation_speed,
+        @motion_accel,
+        @rotation_accel
+      ]).should be_true
+    end
+    
     it "should know it's new x position" do
       @to.x_pos.should == @x_pos2
     end
