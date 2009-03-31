@@ -6,11 +6,29 @@ describe "tuio object" do
   end 
   
   describe "in general" do
+    it "should call the creation hook" do
+      @server.on_object_creation do | objects |
+        raise "creation hook called!"
+      end
+    
+      lambda {
+        send_message( '/tuio/2Dobj', "set", 49, 25, 0.38, 0.35, 3.14, 0.0, 0.0, 0.0, 0.0, 0.0 )
+      }.should raise_error
+      
+      lambda {
+        send_message( '/tuio/2Dobj', "set", 49, 25, 0.38, 0.35, 3.14, 0.0, 0.0, 0.0, 0.0, 0.0 )
+      }.should_not raise_error
+    end
+    
     it "should call the update hook" do
       @server.on_object_update do | objects |
         raise "update hook called!"
       end
-    
+      
+      lambda {
+        send_message( '/tuio/2Dobj', "set", 49, 25, 0.38, 0.35, 3.14, 0.0, 0.0, 0.0, 0.0, 0.0 )
+      }.should_not raise_error
+
       lambda {
         send_message( '/tuio/2Dobj', "set", 49, 25, 0.38, 0.35, 3.14, 0.0, 0.0, 0.0, 0.0, 0.0 )
       }.should raise_error

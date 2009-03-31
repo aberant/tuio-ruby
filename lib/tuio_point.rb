@@ -32,6 +32,11 @@ class TuioPoint
     ( radians_to( another_point ) / Math::PI ) * 180.0
   end
   
+  def eql?( another_point )
+    @x_pos == another_point.x_pos &&
+    @y_pos == another_point.y_pos
+  end
+  
 private
 
   def clear_update_time

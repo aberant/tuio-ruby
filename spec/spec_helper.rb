@@ -3,9 +3,7 @@ require 'spec'
 require 'rr'
 require 'osc'
 
-%w{ point container object client }.each do | type |
-  require File.join( File.dirname( __FILE__ ), '..', 'lib', "tuio_#{type}" )
-end
+require File.join( File.dirname( __FILE__ ), '..', 'lib', 'tuio_client' )
 
 Spec::Runner.configure do |config|
     config.mock_with RR::Adapters::Rspec

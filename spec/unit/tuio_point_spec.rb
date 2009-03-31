@@ -23,6 +23,12 @@ describe TuioPoint do
     it "should know when it was last updated" do
       @point1.should respond_to(:updated_at)
     end
+    
+    it "should know if it is equal to another point" do
+      @other_point = TuioPoint.new( *@location1 )
+      
+      @point1.should be_eql( @other_point )
+    end
   end
   
   describe "updates" do

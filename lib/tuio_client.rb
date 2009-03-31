@@ -1,6 +1,8 @@
 require 'rubygems'
 require 'osc'
 
+require File.join( File.dirname( __FILE__ ), 'my_environment')
+
 
 class TuioClient
   include OSC
@@ -18,7 +20,7 @@ class TuioClient
       
       case args.shift
       when "set"
-        update_tuio_objects( args ) 
+        track_tuio_object( args ) 
       when "alive"
         keep_alive( :tuio_objects, args )
       when "fseq"
@@ -46,6 +48,10 @@ class TuioClient
     end
   end
   
+  ####################################
+  #           getters                #
+  ####################################
+  
   def tuio_objects
     @tuio_objects
   end
@@ -62,6 +68,14 @@ class TuioClient
     @tuio_cursors[id]
   end
   
+  ####################################
+  #           call backs             #
+  ####################################
+  
+  def on_object_creation( &obj_creation_blk )
+    @obj_creation_blk = obj_creation_blk
+  end
+  
   def on_object_update( &obj_update_blk )
     @obj_update_blk = obj_update_blk
   end
@@ -72,16 +86,20 @@ class TuioClient
   
 private
 
-  def update_tuio_objects( args )
+  def track_tuio_object( args )
     session_id = session_id_from( args )
   
     if tuio_object_previously_tracked?( session_id )
-      grab_tuio_object_by( session_id ).update( *args )
+      
+      tuio_object = grab_tuio_object_by( session_id )
+      tuio_object.update( *update_object_params_from( args ) ) unless tuio_object.eql?( args )
+      
+      trigger_object_update_callback( tuio_object )
     else
-      track_new_tuio_object_with( session_id, args )
+      tuio_object = track_new_tuio_object_with( session_id, args )
+      
+      trigger_object_creation_callback( tuio_object  )
     end
-  
-    trigger_callbacks
   end
 
   def cur_args_to_hash( args )
@@ -102,6 +120,10 @@ private
     args[0..4]
   end
   
+  def update_object_params_from( args )
+    args[2..9]
+  end
+  
   def tuio_object_previously_tracked?( session_id )
     @tuio_objects.has_key?( session_id )
   end
@@ -111,11 +133,19 @@ private
   end
   
   def track_new_tuio_object_with( session_id, args )
-    @tuio_objects[session_id] = TuioObject.new( *new_object_params_from( args ) )
+    @tuio_objects[session_id] = TuioObject.new( *new_object_params_from( args ) )    
+  end
+
+  ####################################
+  #           call backs             #
+  ####################################
+  
+  def trigger_object_update_callback( tuio_object )
+    @obj_update_blk.call( tuio_object ) if @obj_update_blk
   end
   
-  def trigger_callbacks
-    @obj_update_blk.call( @tuio_objects ) if @obj_update_blk
+  def trigger_object_creation_callback( tuio_object )
+    @obj_creation_blk.call( tuio_object ) if @obj_creation_blk
   end
   
   def update_tuio_cursors( args )
@@ -126,6 +156,7 @@ private
   end
   
   def keep_alive( type, session_ids )
+    return if session_ids.nil?
     all_keys = send( type ).keys
     
     dead = all_keys.reject { |key|  session_ids.include? key }
