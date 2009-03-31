@@ -34,6 +34,10 @@ describe TuioObject do
     end
   end
   
+  describe "event hooks" do
+    
+  end
+  
   describe "on update" do
     before :each do
       @args2 = [

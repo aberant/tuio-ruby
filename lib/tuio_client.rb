@@ -92,7 +92,10 @@ private
     if tuio_object_previously_tracked?( session_id )
       
       tuio_object = grab_tuio_object_by( session_id )
-      tuio_object.update( *update_object_params_from( args ) ) unless tuio_object.eql?( args )
+      
+      return if tuio_object.eql?( args )
+
+      tuio_object.update( *update_object_params_from( args ) )  
       
       trigger_object_update_callback( tuio_object )
     else
