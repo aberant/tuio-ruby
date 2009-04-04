@@ -34,10 +34,6 @@ describe TuioObject do
     end
   end
   
-  describe "event hooks" do
-    
-  end
-  
   describe "on update" do
     before :each do
       @args2 = [
@@ -55,7 +51,7 @@ describe TuioObject do
     end
     
     it "should be able to compare it's args" do
-      @to.eql?( [
+      @to.args_equal?( [
         @session_id,
         @fiducial_id,
         @x_pos2,

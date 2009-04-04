@@ -80,6 +80,10 @@ class TuioClient
     @obj_update_blk = obj_update_blk
   end
   
+  def on_object_removal( &obj_removal_blk )
+    @obj_removal_blk = obj_removal_blk
+  end
+  
   def on_cursor_update( &cur_update_blk )
     @cur_update_blk = cur_update_blk
   end
@@ -93,10 +97,16 @@ private
       
       tuio_object = grab_tuio_object_by( session_id )
       
-      return if tuio_object.eql?( args )
-
-      tuio_object.update( *update_object_params_from( args ) )  
+      puts "*****************************"
+      puts args.inspect
+      puts "*****************************"
+      puts tuio_object.to_args.inspect
+      puts "*****************************"
       
+      return if tuio_object.args_equal?( args )
+      puts "not equal!!!!"
+      tuio_object.update( *update_object_params_from( args ) )  
+
       trigger_object_update_callback( tuio_object )
     else
       tuio_object = track_new_tuio_object_with( session_id, args )
@@ -151,6 +161,10 @@ private
     @obj_creation_blk.call( tuio_object ) if @obj_creation_blk
   end
   
+  def trigger_object_deletion_callback( tuio_object )
+    @obj_removal_blk.call( tuio_object ) if @obj_removal_blk
+  end
+  
   def update_tuio_cursors( args )
     tuio_cursor = cur_args_to_hash( args )
     
@@ -164,8 +178,12 @@ private
     
     dead = all_keys.reject { |key|  session_ids.include? key }
         
-    dead.each do |d|
-      send( type ).delete( d )
+    dead.each do | session_id |
+      tuio_object = grab_tuio_object_by( session_id )
+      
+      trigger_object_deletion_callback( tuio_object )
+      
+      send( type ).delete( session_id )
     end
   end
 end

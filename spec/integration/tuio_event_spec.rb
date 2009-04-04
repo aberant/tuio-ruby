@@ -20,18 +20,39 @@ describe "tuio object" do
       }.should_not raise_error
     end
     
-    it "should call the update hook" do
-      @server.on_object_update do | objects |
+    it "should call the update hook when session_id is set again with different location" do
+      @server.on_object_update do | object |
         raise "update hook called!"
       end
       
       lambda {
         send_message( '/tuio/2Dobj', "set", 49, 25, 0.38, 0.35, 3.14, 0.0, 0.0, 0.0, 0.0, 0.0 )
+        send_message( '/tuio/2Dobj', "set", 49, 25, 0.38, 0.35, 3.14, 0.0, 0.0, 0.0, 0.0, 0.0 )
+        
+        send_message( '/tuio/2Dobj', "alive", 49)
+        
       }.should_not raise_error
+      
+      
+      lambda {
+        send_message( '/tuio/2Dobj', "set", 49, 25, 0.12, 0.12, 3.14, 0.0, 0.0, 0.0, 0.0, 0.0 )
+        send_message( '/tuio/2Dobj', "alive", 49)
+        
+      }.should raise_error
+    end
+    
+    it "should call the removal hook when an object is not on the alive list" do
+      @server.on_object_removal do | object |
+        raise "removal hook called!"
+      end
+      
+      send_message( '/tuio/2Dobj', "set", 49, 25, 0.38, 0.35, 3.14, 0.0, 0.0, 0.0, 0.0, 0.0 )
+      send_message( '/tuio/2Dobj', "set", 51, 26, 0.12, 0.50, 3.14, 0.0, 0.0, 0.0, 0.0, 0.0 )
 
       lambda {
-        send_message( '/tuio/2Dobj', "set", 49, 25, 0.38, 0.35, 3.14, 0.0, 0.0, 0.0, 0.0, 0.0 )
+        send_message( '/tuio/2Dobj', "alive", 49)
       }.should raise_error
+      
     end
   end
   
