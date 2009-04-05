@@ -12,6 +12,10 @@ You will need the OSC gem
 
   [sudo] gem install aberant-tuio-ruby
   
+== EXAMPLE:
+
+  please see tuio_dump.rb in the example folder for basic useage
+
 == COPYRIGHT:
 
 Copyright (c) 2009 Colin Harris. See LICENSE for details.
