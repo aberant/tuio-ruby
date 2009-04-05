@@ -1,7 +1,7 @@
 require 'tuio_container'
 
 class TuioObject 
-  attr_accessor :angle, :fiducial_id, :rotation_speed, :rotation_accel
+  attr_reader :angle, :fiducial_id, :rotation_speed, :rotation_accel
   
   include TuioContainer
   

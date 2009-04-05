@@ -112,16 +112,54 @@ describe "tuio_cursors" do
     send_message( '/tuio/2Dcur', "alive", 22)
     
     @server.tuio_cursors.size.should == 1
-    @server.tuio_cursors[22][:session_id].should == 22
+    @server.tuio_cursors[22].session_id.should == 22
+  end
+  
+  it "should call the creation hooks" do
+    @server.on_cursor_creation do | objects |
+      raise "create! hook called!"
+    end
+    
+    lambda {
+      send_message( '/tuio/2Dcur', "set", 27, 0.12, 0.50, 0.0, 0.0, 0.0 )
+    }.should raise_error
   end
   
   it "should call the update hooks" do
     @server.on_cursor_update do | objects |
       raise "update hook called!"
     end
+
+    lambda {
+      send_message( '/tuio/2Dcur', "set", 27, 0.12, 0.50, 0.0, 0.0, 0.0 )
+      send_message( '/tuio/2Dcur', "alive", 27)
+      
+      send_message( '/tuio/2Dcur', "set", 27, 0.12, 0.50, 0.0, 0.0, 0.0 )
+      send_message( '/tuio/2Dcur', "alive", 27)
+      
+    }.should_not raise_error
+    
+    lambda {
+      send_message( '/tuio/2Dcur', "set", 27, 0.12, 0.32, 0.0, 0.0, 0.0 )
+      send_message( '/tuio/2Dcur', "alive", 27)
+      
+    }.should raise_error
+    
+  end
+  
+  it "should call the removal hooks" do
+    @server.on_cursor_removal do | objects |
+      raise "removal hook called!"
+    end
     
     lambda {
       send_message( '/tuio/2Dcur', "set", 27, 0.12, 0.50, 0.0, 0.0, 0.0 )
+      send_message( '/tuio/2Dcur', "set", 32, 0.18, 0.98, 0.0, 0.0, 0.0 )
+    }.should_not raise_error
+
+    lambda {
+      send_message( '/tuio/2Dcur', "alive", 27)
+      
     }.should raise_error
   end
 end
