@@ -24,17 +24,20 @@ describe "tuio object" do
       @server.on_object_update do | object |
         raise "update hook called!"
       end
-      
+
       lambda {
+        # this one calls the create hook
         send_message( '/tuio/2Dobj', "set", 49, 25, 0.38, 0.35, 3.14, 0.0, 0.0, 0.0, 0.0, 0.0 )
-        send_message( '/tuio/2Dobj', "set", 49, 25, 0.38, 0.35, 3.14, 0.0, 0.0, 0.0, 0.0, 0.0 )
-        
         send_message( '/tuio/2Dobj', "alive", 49)
         
+        #this one is the same as before, so nothing to update
+        send_message( '/tuio/2Dobj', "set", 49, 25, 0.38, 0.35, 3.14, 0.0, 0.0, 0.0, 0.0, 0.0 )
+        send_message( '/tuio/2Dobj', "alive", 49)
       }.should_not raise_error
       
       
       lambda {
+        #this one calls the update hook
         send_message( '/tuio/2Dobj', "set", 49, 25, 0.12, 0.12, 3.14, 0.0, 0.0, 0.0, 0.0, 0.0 )
         send_message( '/tuio/2Dobj', "alive", 49)
         

@@ -97,14 +97,8 @@ private
       
       tuio_object = grab_tuio_object_by( session_id )
       
-      puts "*****************************"
-      puts args.inspect
-      puts "*****************************"
-      puts tuio_object.to_args.inspect
-      puts "*****************************"
-      
       return if tuio_object.args_equal?( args )
-      puts "not equal!!!!"
+
       tuio_object.update( *update_object_params_from( args ) )  
 
       trigger_object_update_callback( tuio_object )
