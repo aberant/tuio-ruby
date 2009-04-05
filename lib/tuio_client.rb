@@ -8,6 +8,8 @@ require "tuio_object"
 class TuioClient
   include OSC
   
+  client_block_setter :object_creation, :object_update, :object_removal
+  
   def initialize( args = {} )
     @port = args[:port] || 3333
 
@@ -73,18 +75,6 @@ class TuioClient
   #           call backs             #
   ####################################
   
-  def on_object_creation( &obj_creation_blk )
-    @obj_creation_blk = obj_creation_blk
-  end
-  
-  def on_object_update( &obj_update_blk )
-    @obj_update_blk = obj_update_blk
-  end
-  
-  def on_object_removal( &obj_removal_blk )
-    @obj_removal_blk = obj_removal_blk
-  end
-  
   def on_cursor_update( &cur_update_blk )
     @cur_update_blk = cur_update_blk
   end
@@ -149,15 +139,15 @@ private
   ####################################
   
   def trigger_object_update_callback( tuio_object )
-    @obj_update_blk.call( tuio_object ) if @obj_update_blk
+    @object_update_callback_blk.call( tuio_object ) if @object_update_callback_blk
   end
   
   def trigger_object_creation_callback( tuio_object )
-    @obj_creation_blk.call( tuio_object ) if @obj_creation_blk
+    @object_creation_callback_blk.call( tuio_object ) if @object_creation_callback_blk
   end
   
   def trigger_object_deletion_callback( tuio_object )
-    @obj_removal_blk.call( tuio_object ) if @obj_removal_blk
+    @object_removal_callback_blk.call( tuio_object ) if @object_removal_callback_blk
   end
   
   def update_tuio_cursors( args )

@@ -1,4 +1,4 @@
-require '../lib/tuio_client'
+require File.join( File.dirname( __FILE__ ), '..', 'lib', 'tuio_client' )
 
 
 @tc = TuioClient.new
@@ -8,9 +8,12 @@ require '../lib/tuio_client'
 end
 
 @tc.on_object_update do | to |
-  puts "TUIO Object #{to.fiducial_id} path is:"
-  to.path[0..9].each{|p| puts "x: #{p.x_pos}, y: #{p.y_pos}"}
+  puts "Updated TUIO Object #{to.fiducial_id} at x: #{to.x_pos}, y: #{to.y_pos}"
 end
 
-tc.start
+@tc.on_object_removal do | to |
+  puts "Removed TUIO Object #{to.fiducial_id}"
+end
+
+@tc.start
 sleep
