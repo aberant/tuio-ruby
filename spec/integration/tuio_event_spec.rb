@@ -7,8 +7,8 @@ describe "tuio object" do
   
   describe "in general" do
     it "should call the creation hook" do
-      @server.on_object_creation do | objects |
-        raise "creation hook called!"
+      @server.on_object_creation do | object |
+        raise "creation hook called!" if object.session_id == 49
       end
     
       lambda {
@@ -22,7 +22,7 @@ describe "tuio object" do
     
     it "should call the update hook when session_id is set again with different location" do
       @server.on_object_update do | object |
-        raise "update hook called!"
+        raise "update hook called!" if object.session_id == 49
       end
 
       lambda {
@@ -46,7 +46,7 @@ describe "tuio object" do
     
     it "should call the removal hook when an object is not on the alive list" do
       @server.on_object_removal do | object |
-        raise "removal hook called!"
+        raise "removal hook called!" if object.session_id == 51
       end
       
       send_message( '/tuio/2Dobj', "set", 49, 25, 0.38, 0.35, 3.14, 0.0, 0.0, 0.0, 0.0, 0.0 )

@@ -3,6 +3,7 @@ require 'osc'
 
 require File.join( File.dirname( __FILE__ ), 'my_environment')
 
+require "tuio_object"
 
 class TuioClient
   include OSC

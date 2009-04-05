@@ -1,3 +1,5 @@
+require 'tuio_point'
+
 module TuioContainer 
   attr_accessor :session_id, :x_pos, :y_pos, :x_speed, :y_speed, :motion_accel
 
