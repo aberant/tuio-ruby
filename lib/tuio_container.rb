@@ -1,14 +1,13 @@
 require 'tuio_point'
 
-module TuioContainer 
+class TuioContainer < TuioPoint
   attr_accessor :session_id, :x_pos, :y_pos, :x_speed, :y_speed, :motion_accel
 
   
   def initialize( session_id, x_pos, y_pos )
-    @session_id = session_id
-    @x_pos = x_pos
-    @y_pos = y_pos
+    super( x_pos, y_pos )
     
+    @session_id = session_id
     @x_speed = 0.0
     @y_speed = 0.0
     @motion_accel = 0.0
@@ -17,8 +16,8 @@ module TuioContainer
   end
   
   def update( x_pos, y_pos, x_speed, y_speed, motion_accel )  
-    @x_pos = x_pos
-    @y_pos = y_pos  
+    super( x_pos, y_pos )
+    
     @x_speed = x_speed
     @y_speed = y_speed
     @motion_accel = motion_accel
@@ -37,7 +36,12 @@ module TuioContainer
     @y_pos.approx_equal?( args[2] ) &&
     @x_speed.approx_equal?( args[3] ) &&
     @y_speed.approx_equal?( args[4] ) &&
-    @motion_accel.approx_equal?( args[5] )
+    @motion_accel.approx_equal?( args[5] ) && 
+    equal_to_local_args?(args)
+  end
+  
+  def equal_to_local_args?(args)
+    true
   end
   
 private

@@ -1,7 +1,8 @@
-class TuioCursor
-  include TuioContainer
+class TuioCursor < TuioContainer
   
-  attr_reader :finger_id, :x_speed, :y_speed, :motion_accel
+  attr_accessor :finger_id
+  attr_reader  :x_speed, :y_speed, :motion_accel
+  
   
   def initialize( session_id, x_pos, y_pos ) #, x_speed, y_speed, motion_accel )
     super( session_id, x_pos, y_pos )
@@ -11,9 +12,7 @@ class TuioCursor
     @motion_accel = 0.0
   end
     
-  def args_equal?( args )
-    super( args_to_container_from_cursor( args ) ) &&
-    
+  def equal_to_local_args?( args )
     @x_speed.approx_equal?(args[3] ) &&
     @y_speed.approx_equal?(args[4] ) &&
     @motion_accel.approx_equal?(args[5] )
@@ -22,6 +21,7 @@ class TuioCursor
   def inspect
     puts "TuioCursor:"
     puts "session_id >> #{session_id}"
+    puts "finger_id >> #{@finger_id}"
     puts "x_pos >> #{x_pos}"
     puts "y_pos >> #{y_pos}"
     puts "x_speed >> #{x_speed}"

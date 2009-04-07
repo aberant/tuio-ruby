@@ -1,9 +1,8 @@
 require 'tuio_container'
 
-class TuioObject 
+class TuioObject < TuioContainer
   attr_reader :angle, :fiducial_id, :rotation_speed, :rotation_accel
   
-  include TuioContainer
   
   def initialize( session_id, fiducial_id, x_pos,  y_pos, angle )
     super( session_id, x_pos, y_pos )

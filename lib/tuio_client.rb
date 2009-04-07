@@ -9,6 +9,9 @@ require "tuio_cursor"
 class TuioClient
   include OSC
   
+  attr_reader :tuio_objects, :tuio_cursors
+  
+  
   client_block_setter :object_creation, :object_update, :object_removal
   client_block_setter :cursor_creation, :cursor_update, :cursor_removal
   
@@ -57,29 +60,13 @@ class TuioClient
   #           getters                #
   ####################################
   
-  def tuio_objects
-    @tuio_objects
-  end
-  
   def tuio_object( id )
     @tuio_objects[id]
   end
   
-  def tuio_cursors
-    @tuio_cursors
-  end  
-    
   def tuio_cursor( id )
     @tuio_cursors[id]
   end
-  
-  ####################################
-  #           call backs             #
-  ####################################
-  
-  # def on_cursor_update( &cur_update_blk )
-  #   @cur_update_blk = cur_update_blk
-  # end
   
 private
 
@@ -115,9 +102,9 @@ private
       
     else # this is a new cursor      
       finger_id = @tuio_cursors.size
-      track_new_tuio_cursor_with( session_id, args )
+      tuio_cursor = track_new_tuio_cursor_with( session_id, args )
       
-      trigger_cursor_creation_callback( grab_tuio_cursor_by( session_id )  )
+      trigger_cursor_creation_callback( tuio_cursor  )
       
     end
   end
@@ -163,8 +150,10 @@ private
     @tuio_objects[session_id] = TuioObject.new( *new_object_params_from( args ) )    
   end
 
-  def track_new_tuio_cursor_with( session_id, args )    
-    @tuio_cursors[session_id] = TuioCursor.new( *new_cursor_params_from( args ) ) 
+  def track_new_tuio_cursor_with( session_id, args )  
+    new_cursor = TuioCursor.new( *new_cursor_params_from( args ) )
+    @tuio_cursors[session_id] =  new_cursor
+    new_cursor.finger_id = @tuio_cursors.size
   end
 
   ####################################
