@@ -6,8 +6,11 @@ describe TuioCursor do
       @session_id = 42,
       @x_pos = 0.8,
       @y_pos = 0.4,
+      @x_speed = 0.01,
+      @y_speed = 0.03,
+      @motion_accel = 0.02
     ]
-    @params = TuioCursorParameter.from_creation_args( *@args1 )
+    @params = TuioCursorParameter.new( *@args1 )
     @tc = TuioCursor.from_params( @params )
   end
   
@@ -21,7 +24,7 @@ describe TuioCursor do
         @y_speed = 0.03,
         @motion_accel = 0.02
       ]
-      @update_params = TuioCursorParameter.from_update_args( *@args2 )
+      @update_params = TuioCursorParameter.new( *@args2 )
       @tc.update_from_params( @update_params )
     end
     

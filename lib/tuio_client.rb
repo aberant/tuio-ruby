@@ -15,8 +15,8 @@ class TuioClient
   attr_reader :tuio_objects, :tuio_cursors
   
   
-  client_block_setter :object_creation, :object_update, :object_removal
-  client_block_setter :cursor_creation, :cursor_update, :cursor_removal
+  client_events :object_creation, :object_update, :object_removal
+  client_events :cursor_creation, :cursor_update, :cursor_removal
   
   def initialize( args = {} )
     @port = args[:port] || 3333
@@ -74,9 +74,9 @@ class TuioClient
 private
 
   def track_tuio_object( args )
-    params = TuioObjectParameter.from_creation_args( *args )
+    params = TuioObjectParameter.new( *args )
     
-    if tuio_object_previously_tracked?( params.session_id )
+    if tuio_object_previously_tracked?( params )
       
       tuio_object = grab_tuio_object_by( params.session_id )
       
@@ -85,7 +85,7 @@ private
       tuio_object.update_from_params( params )  
 
       trigger_object_update_callback( tuio_object )
-    else
+    else # this is a new object
       tuio_object = track_new_tuio_object_with( params )
       
       trigger_object_creation_callback( tuio_object  )
@@ -93,9 +93,9 @@ private
   end
   
   def track_tuio_cursor( args )
-    params = TuioCursorParameter.from_creation_args( *args )
+    params = TuioCursorParameter.new( *args )
     
-    if tuio_cursor_previously_tracked?( params.session_id )
+    if tuio_cursor_previously_tracked?( params )
       
       tuio_cursor = grab_tuio_cursor_by( params.session_id )
       
@@ -107,39 +107,17 @@ private
     else # this is a new cursor      
       finger_id = @tuio_cursors.size
       tuio_cursor = track_new_tuio_cursor_with( params )
-      
+
       trigger_cursor_creation_callback( tuio_cursor  )
-      
     end
   end
   
-  def session_id_from( args )
-    args[0]
+  def tuio_object_previously_tracked?( params )
+    @tuio_objects.has_key?( params.session_id )
   end
   
-  def new_object_params_from( args )
-    args[0..4]
-  end
-  
-  def update_object_params_from( args )
-    args[2..9]
-  end
-  
-  def new_cursor_params_from( args )
-    args[0..2]
-  end
-
-  def update_cursor_params_from( args )
-    args[1..5]
-  end
-
-  
-  def tuio_object_previously_tracked?( session_id )
-    @tuio_objects.has_key?( session_id )
-  end
-  
-  def tuio_cursor_previously_tracked?( session_id )
-    @tuio_cursors.has_key?( session_id )
+  def tuio_cursor_previously_tracked?( params )
+    @tuio_cursors.has_key?( params.session_id )
   end
   
   def grab_tuio_object_by( session_id )
@@ -159,50 +137,23 @@ private
     @tuio_cursors[params.session_id] =  new_cursor
     
     new_cursor.finger_id = @tuio_cursors.size
+    new_cursor
   end
-
+  
   ####################################
-  #           call backs             #
+  #           "alive" msgs           #
   ####################################
-  
-  def trigger_object_update_callback( tuio_object )
-    @object_update_callback_blk.call( tuio_object ) if @object_update_callback_blk
-  end
-  
-  def trigger_object_creation_callback( tuio_object )
-    @object_creation_callback_blk.call( tuio_object ) if @object_creation_callback_blk
-  end
-  
-  def trigger_object_deletion_callback( tuio_object )
-    @object_removal_callback_blk.call( tuio_object ) if @object_removal_callback_blk
-  end
-  
-  def trigger_cursor_creation_callback( tuio_cursor )
-    @cursor_creation_callback_blk.call( tuio_cursor ) if @cursor_creation_callback_blk
-  end
-  
-  def trigger_cursor_update_callback( tuio_cursor )
-    @cursor_update_callback_blk.call( tuio_cursor ) if @cursor_update_callback_blk
-  end
-  
-  def trigger_cursor_update_callback( tuio_cursor )    
-    @cursor_update_callback_blk.call( tuio_cursor ) if @cursor_update_callback_blk
-  end
-  
-  def trigger_cursor_deletion_callback( tuio_object )
-    @cursor_removal_callback_blk.call( tuio_object ) if @cursor_removal_callback_blk
-  end
   
   def delete_tuio_objects( session_id )
     tuio_object = grab_tuio_object_by( session_id )
     
-    trigger_object_deletion_callback( tuio_object )
+    trigger_object_removal_callback( tuio_object )
   end
   
   def delete_tuio_cursors( session_id )
     tuio_cursor = grab_tuio_cursor_by( session_id )
     
-    trigger_cursor_deletion_callback( tuio_cursor )
+    trigger_cursor_removal_callback( tuio_cursor )
   end
   
   
@@ -218,8 +169,4 @@ private
       send( type ).delete( session_id )
     end
   end
-end
-
-if $0 == __FILE__
-  TuioClient.new.start
 end

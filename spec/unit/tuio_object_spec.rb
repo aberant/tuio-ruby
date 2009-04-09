@@ -7,9 +7,14 @@ describe TuioObject do
       @fiducial_id = 1,
       @x_pos = 0.8,
       @y_pos = 0.4,
-      @angle = 1
+      @angle = 1,
+      @x_speed = 0.1,
+      @y_speed = 0.2,
+      @rotation_vector = 0.11,
+      @motion_accel = 0.12,
+      @rotation_accel = 0.13
     ]
-    @params = TuioObjectParameter.from_creation_args( *@args1 )
+    @params = TuioObjectParameter.new( *@args1 )
     @to = TuioObject.from_params( @params )
   end
   
