@@ -6,7 +6,7 @@ class TuioContainer < TuioPoint
   
   def initialize( session_id, x_pos, y_pos )
     super( x_pos, y_pos )
-    
+
     @session_id = session_id
     @x_speed = 0.0
     @y_speed = 0.0
@@ -26,18 +26,27 @@ class TuioContainer < TuioPoint
     add_point_to_path( new_point ) unless new_point == @path.last
   end
   
+  def update_from_params( params )
+    @x_pos = params.x_pos
+    @y_pos = params.y_pos
+    @x_speed = params.x_speed
+    @y_speed = params.y_speed
+    @motion_accel = params.motion_accel
+  end
+  
   def path
     @path 
   end
   
-  def args_equal?( args )
-    @session_id == args[0] &&
-    @x_pos.approx_equal?( args[1] ) &&
-    @y_pos.approx_equal?( args[2] ) &&
-    @x_speed.approx_equal?( args[3] ) &&
-    @y_speed.approx_equal?( args[4] ) &&
-    @motion_accel.approx_equal?( args[5] ) && 
-    equal_to_local_args?(args)
+  
+  def params_equal?( params )
+    @session_id == params.session_id &&
+    @x_pos.approx_equal?( params.x_pos ) &&
+    @y_pos.approx_equal?( params.y_pos ) &&
+    @x_speed.approx_equal?( params.x_speed ) &&
+    @y_speed.approx_equal?( params.y_speed ) &&
+    @motion_accel.approx_equal?( params.motion_accel )# && 
+    #equal_to_local_params?(args)
   end
   
   def equal_to_local_args?(args)

@@ -9,7 +9,8 @@ describe TuioObject do
       @y_pos = 0.4,
       @angle = 1
     ]
-    @to = TuioObject.new( *@args1 )
+    @params = TuioObjectParameter.from_creation_args( *@args1 )
+    @to = TuioObject.from_params( @params )
   end
   
   describe "in general" do
@@ -35,34 +36,26 @@ describe TuioObject do
   end
   
   describe "on update" do
+    
     before :each do
       @args2 = [
+        @sesssion_id = 42,
+        @fiducial_id = 1,
         @x_pos2 = 0.7,
         @y_pos2 = 0.4,
         @angle2 = 1.1,
         @x_speed = 0.1,
         @y_speed = 0.2,
-        @rotation_speed = 0.11,
+        @rotation_vector = 0.11,
         @motion_accel = 0.12,
         @rotation_accel = 0.13
       ]
-      
-      @to.update( *@args2 )
+      @update_params = TuioObjectParameter.new( *@args2 )
+      @to.update_from_params( @update_params )
     end
     
     it "should be able to compare it's args" do
-      @to.args_equal?( [
-        @session_id,
-        @fiducial_id,
-        @x_pos2,
-        @y_pos2,
-        @angle2,
-        @x_speed,
-        @y_speed,
-        @rotation_speed,
-        @motion_accel,
-        @rotation_accel
-      ]).should be_true
+      @to.params_equal?( @update_params ).should be_true
     end
     
     it "should know it's new x position" do
@@ -85,8 +78,8 @@ describe TuioObject do
       @to.y_speed.should == @y_speed
     end
     
-    it "should know it's rotation speed" do
-      @to.rotation_speed.should == @rotation_speed
+    it "should know it's rotation vector" do
+      @to.rotation_vector.should == @rotation_vector
     end
     
     it "should know it's rotation accel" do

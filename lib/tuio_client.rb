@@ -5,6 +5,9 @@ require File.join( File.dirname( __FILE__ ), 'my_environment')
 
 require "tuio_object"
 require "tuio_cursor"
+require 'tuio_object_parameter'
+require 'tuio_cursor_parameter'
+
 
 class TuioClient
   include OSC
@@ -71,38 +74,39 @@ class TuioClient
 private
 
   def track_tuio_object( args )
-    session_id = session_id_from( args )
-  
-    if tuio_object_previously_tracked?( session_id )
+    params = TuioObjectParameter.from_creation_args( *args )
+    
+    if tuio_object_previously_tracked?( params.session_id )
       
-      tuio_object = grab_tuio_object_by( session_id )
+      tuio_object = grab_tuio_object_by( params.session_id )
       
-      return if tuio_object.args_equal?( args )
+      return if tuio_object.params_equal?( params )
 
-      tuio_object.update( *update_object_params_from( args ) )  
+      tuio_object.update_from_params( params )  
 
       trigger_object_update_callback( tuio_object )
     else
-      tuio_object = track_new_tuio_object_with( session_id, args )
+      tuio_object = track_new_tuio_object_with( params )
       
       trigger_object_creation_callback( tuio_object  )
     end
   end
   
   def track_tuio_cursor( args )
-    session_id = session_id_from( args )
+    params = TuioCursorParameter.from_creation_args( *args )
     
-    if tuio_cursor_previously_tracked?( session_id )
-      tuio_cursor = grab_tuio_cursor_by( session_id )
+    if tuio_cursor_previously_tracked?( params.session_id )
       
-      return if tuio_cursor.args_equal?( args )
-      tuio_cursor.update( *update_cursor_params_from( args ))
+      tuio_cursor = grab_tuio_cursor_by( params.session_id )
+      
+      return if tuio_cursor.params_equal?( params )
+      tuio_cursor.update_from_params( params )
       
       trigger_cursor_update_callback( tuio_cursor )
       
     else # this is a new cursor      
       finger_id = @tuio_cursors.size
-      tuio_cursor = track_new_tuio_cursor_with( session_id, args )
+      tuio_cursor = track_new_tuio_cursor_with( params )
       
       trigger_cursor_creation_callback( tuio_cursor  )
       
@@ -146,13 +150,14 @@ private
     @tuio_cursors[session_id]
   end
   
-  def track_new_tuio_object_with( session_id, args )
-    @tuio_objects[session_id] = TuioObject.new( *new_object_params_from( args ) )    
+  def track_new_tuio_object_with( tuio_params )
+    @tuio_objects[tuio_params.session_id] = TuioObject.from_params( tuio_params )    
   end
 
-  def track_new_tuio_cursor_with( session_id, args )  
-    new_cursor = TuioCursor.new( *new_cursor_params_from( args ) )
-    @tuio_cursors[session_id] =  new_cursor
+  def track_new_tuio_cursor_with( params )  
+    new_cursor = TuioCursor.from_params( params )
+    @tuio_cursors[params.session_id] =  new_cursor
+    
     new_cursor.finger_id = @tuio_cursors.size
   end
 
