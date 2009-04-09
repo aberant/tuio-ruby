@@ -66,7 +66,7 @@ describe "tuio object" do
     
     describe "set" do
       it 'should update tracking' do
-        @server.tuio_objects.size.should == 1
+        @server.tuio_objects.size.should eql( 1 )
         @server.tuio_objects[49].fiducial_id.should == 25
       end
     end

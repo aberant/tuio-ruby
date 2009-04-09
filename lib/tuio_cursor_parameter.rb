@@ -4,7 +4,4 @@ require 'tuio_parameter'
 
 class TuioCursorParameter < TuioParameter
 
-  def self.from_update_args( session_id, x_pos, y_pos, x_speed, y_speed, motion_accel )
-    new( session_id, x_pos, y_pos, x_speed, y_speed, motion_accel)
-  end
 end

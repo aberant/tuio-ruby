@@ -45,8 +45,8 @@ class TuioContainer < TuioPoint
     @y_pos.approx_equal?( params.y_pos ) &&
     @x_speed.approx_equal?( params.x_speed ) &&
     @y_speed.approx_equal?( params.y_speed ) &&
-    @motion_accel.approx_equal?( params.motion_accel )# && 
-    #equal_to_local_params?(args)
+    @motion_accel.approx_equal?( params.motion_accel ) && 
+    equal_to_local_params?( params )
   end
   
   def equal_to_local_args?(args)
