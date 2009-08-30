@@ -17,8 +17,9 @@ begin
     gem.email = "qzzzq1@gmail.com"
     gem.homepage = "http://github.com/aberant/tuio-ruby"
     gem.authors = ["aberant"]
-    gem.files = FileList['examples/**/*', 'lib/**/*'].to_a
+    gem.files = FileList['Rakefile', 'examples/**/*', 'lib/**/*'].to_a
     gem.test_files = FileList['spec/**/*.rb']
+    gem.add_dependency('aberant-osc-ruby', '>= 0.1.6')
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
 rescue LoadError

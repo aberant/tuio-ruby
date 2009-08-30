@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.date = %q{2009-08-30}
   s.email = %q{qzzzq1@gmail.com}
   s.extra_rdoc_files = ["README.rdoc", "LICENSE"]
-  s.files = ["examples/tuio_dump.rb", "lib/tuio-ruby", "lib/tuio-ruby/core_ext", "lib/tuio-ruby/core_ext/float.rb", "lib/tuio-ruby/core_ext/object.rb", "lib/tuio-ruby/tuio_client.rb", "lib/tuio-ruby/tuio_container.rb", "lib/tuio-ruby/tuio_cursor.rb", "lib/tuio-ruby/tuio_cursor_parameter.rb", "lib/tuio-ruby/tuio_object.rb", "lib/tuio-ruby/tuio_object_parameter.rb", "lib/tuio-ruby/tuio_parameter.rb", "lib/tuio-ruby/tuio_point.rb", "lib/tuio-ruby.rb", "spec/integration/tuio_event_spec.rb", "spec/spec_helper.rb", "spec/unit/tuio_container_spec.rb", "spec/unit/tuio_cursor_parameter_spec.rb", "spec/unit/tuio_cursor_spec.rb", "spec/unit/tuio_object_parameter_spec.rb", "spec/unit/tuio_object_spec.rb", "spec/unit/tuio_parameter_spec.rb", "spec/unit/tuio_point_spec.rb", "README.rdoc", "LICENSE"]
+  s.files = ["Rakefile", "examples/tuio_dump.rb", "lib/tuio-ruby", "lib/tuio-ruby/core_ext", "lib/tuio-ruby/core_ext/float.rb", "lib/tuio-ruby/core_ext/object.rb", "lib/tuio-ruby/tuio_client.rb", "lib/tuio-ruby/tuio_container.rb", "lib/tuio-ruby/tuio_cursor.rb", "lib/tuio-ruby/tuio_cursor_parameter.rb", "lib/tuio-ruby/tuio_object.rb", "lib/tuio-ruby/tuio_object_parameter.rb", "lib/tuio-ruby/tuio_parameter.rb", "lib/tuio-ruby/tuio_point.rb", "lib/tuio-ruby.rb", "spec/integration/tuio_event_spec.rb", "spec/spec_helper.rb", "spec/unit/tuio_container_spec.rb", "spec/unit/tuio_cursor_parameter_spec.rb", "spec/unit/tuio_cursor_spec.rb", "spec/unit/tuio_object_parameter_spec.rb", "spec/unit/tuio_object_spec.rb", "spec/unit/tuio_parameter_spec.rb", "spec/unit/tuio_point_spec.rb", "README.rdoc", "LICENSE"]
   s.has_rdoc = true
   s.homepage = %q{http://github.com/aberant/tuio-ruby}
   s.rdoc_options = ["--inline-source", "--charset=UTF-8"]
@@ -23,8 +23,11 @@ Gem::Specification.new do |s|
     s.specification_version = 2
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
+      s.add_runtime_dependency(%q<aberant-osc-ruby>, [">= 0.1.6"])
     else
+      s.add_dependency(%q<aberant-osc-ruby>, [">= 0.1.6"])
     end
   else
+    s.add_dependency(%q<aberant-osc-ruby>, [">= 0.1.6"])
   end
 end

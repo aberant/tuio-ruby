@@ -1,5 +1,5 @@
 require 'rubygems'
-require 'osc'
+require 'osc-ruby'
 
 # core exts
 require 'core_ext/object'
@@ -20,7 +20,7 @@ class TuioClient
     @tuio_objects = { }
     @tuio_cursors = { }
     
-    @osc = OSC::SimpleServer.new(@port)
+    @osc = OSC::Server.new(@port)
     
     @osc.add_method '/tuio/2Dobj' do |msg|
       args = msg.to_a
