@@ -1,4 +1,4 @@
-require File.join( File.dirname( __FILE__ ), '..', 'lib', 'tuio_client' )
+require File.join( File.dirname( __FILE__ ), '..', 'lib', 'tuio-ruby' )
 
 
 @tc = TuioClient.new

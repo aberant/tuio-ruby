@@ -1,4 +1,5 @@
-require 'tuio_parameter'
+require File.join( File.dirname( __FILE__ ), 'tuio_parameter' )
+
 # /tuio/2Dobj set s i x y a X Y A m r
 
 

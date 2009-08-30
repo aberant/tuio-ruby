@@ -1,4 +1,4 @@
-require 'tuio_container'
+require File.join( File.dirname( __FILE__ ), 'tuio_container' )
 
 class TuioObject < TuioContainer
   attr_reader :angle, :fiducial_id, :rotation_vector, :rotation_accel

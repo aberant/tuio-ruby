@@ -1,4 +1,4 @@
-require 'tuio_container'
+require File.join( File.dirname( __FILE__ ), 'tuio_container' )
 
 class TuioCursor < TuioContainer
   

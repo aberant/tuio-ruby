@@ -1,4 +1,4 @@
-require 'tuio_point'
+require File.join( File.dirname( __FILE__ ), 'tuio_point' )
 
 class TuioContainer < TuioPoint
   attr_accessor :session_id, :x_pos, :y_pos, :x_speed, :y_speed, :motion_accel

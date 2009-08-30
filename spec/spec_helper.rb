@@ -3,7 +3,9 @@ require 'spec'
 require 'rr'
 require 'osc'
 
-require File.join( File.dirname( __FILE__ ), '..', 'lib', 'tuio_client' )
+$: << File.join( File.dirname( __FILE__ ), '..', 'lib' )
+
+require 'tuio-ruby' 
 
 Spec::Runner.configure do |config|
     config.mock_with RR::Adapters::Rspec

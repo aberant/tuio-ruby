@@ -1,13 +1,9 @@
 require 'rubygems'
 require 'osc'
 
-require File.join( File.dirname( __FILE__ ), 'my_environment')
-
-require "tuio_object"
-require "tuio_cursor"
-require 'tuio_object_parameter'
-require 'tuio_cursor_parameter'
-
+# core exts
+require 'core_ext/object'
+require 'core_ext/float'
 
 class TuioClient
   include OSC
