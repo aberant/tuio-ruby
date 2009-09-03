@@ -3,3 +3,4 @@ Manifest
 pkg/*
 doc/*
 coverage/*
+vendor/*
