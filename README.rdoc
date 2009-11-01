@@ -10,7 +10,7 @@ You will need the OSC gem
 
 == INSTALL:
 
-  [sudo] gem install aberant-tuio-ruby
+  [sudo] gem install tuio-ruby
   
 == EXAMPLE:
 
