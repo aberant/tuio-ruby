@@ -5,10 +5,11 @@ http://www.tuio.org/
 == INSTALL:
 
   [sudo] gem install tuio-ruby
-  
+
 == EXAMPLE:
 
-  require File.join( File.dirname( __FILE__ ), '..', 'lib', 'tuio-ruby' )
+  require 'rubygems'
+  require 'tuio-ruby'
 
 
   @tc = TuioClient.new
