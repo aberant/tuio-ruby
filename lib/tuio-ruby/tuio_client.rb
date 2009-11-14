@@ -2,8 +2,8 @@ require 'rubygems'
 require 'osc-ruby'
 
 # core exts
-require 'core_ext/object'
-require 'core_ext/float'
+require 'tuio-ruby/core_ext/object'
+require 'tuio-ruby/core_ext/float'
 
 class TuioClient
   include OSC
