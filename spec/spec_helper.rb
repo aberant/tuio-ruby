@@ -1,15 +1,10 @@
 require 'rubygems'
 require 'spec'
-require 'rr'
-require 'osc'
+require 'osc-ruby'
 
 $: << File.join( File.dirname( __FILE__ ), '..', 'lib' )
 
-require 'tuio-ruby' 
-
-Spec::Runner.configure do |config|
-    config.mock_with RR::Adapters::Rspec
-end
+require 'tuio-ruby'
 
 # monkey patch to get at osc core to send messages
 class TuioClient
@@ -21,16 +16,18 @@ end
 # helper method for integration tests
 def send_message( pattern, *msg )
   osc_msg = OSC::Message.new( pattern, nil, *msg)
-  
+
   @server.osc.send( :sendmesg, osc_msg )
 end
 
 def setup_server
-  mock( socket = Object.new )
+  socket = mock( "socket" )
 
   # stub out networking
-  stub(socket).bind("", 3333)
-  stub(UDPSocket).new { socket }
+  socket.stub!(:bind).with("", 3333)
 
+  UDPSocket.stub!(:new).and_return( socket )
+
+  # UDPSocket.new.bind( "", 3333 )
   @server = TuioClient.new
 end
