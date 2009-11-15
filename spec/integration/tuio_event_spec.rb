@@ -4,7 +4,7 @@ describe "tuio object" do
   before :each do
     setup_server
   end 
-  
+
   describe "in general" do
     it "should call the creation hook" do
       @server.on_object_creation do | object |
@@ -90,6 +90,14 @@ describe "tuio_cursors" do
   before :each do
     setup_server
   end
+  describe "CCV height / width extensions" do
+    it "should strip the height / width parameters off" do
+      lambda{
+        # passing in extra two parameters
+        send_message( '/tuio/2Dcur', "set", 22, 0.38, 0.35, 0.0, 0.0, 0.0, 0.1, 0.1 )
+      }.should_not raise_error
+    end
+  end
   
   it 'should update tracking' do
     send_message( '/tuio/2Dcur', "set", 22, 0.38, 0.35, 0.0, 0.0, 0.0 )
@@ -124,6 +132,7 @@ describe "tuio_cursors" do
       send_message( '/tuio/2Dcur', "set", 27, 0.12, 0.50, 0.0, 0.0, 0.0 )
     }.should raise_error
   end
+  
   
   it "should call the update hooks" do
     @server.on_cursor_update do | objects |
