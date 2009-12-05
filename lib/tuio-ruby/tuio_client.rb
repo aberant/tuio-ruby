@@ -1,4 +1,3 @@
-require 'rubygems'
 require 'osc-ruby'
 
 # core exts
@@ -9,7 +8,6 @@ class TuioClient
   include OSC
 
   attr_reader :tuio_objects, :tuio_cursors
-
 
   client_events :object_creation, :object_update, :object_removal
   client_events :cursor_creation, :cursor_update, :cursor_removal
