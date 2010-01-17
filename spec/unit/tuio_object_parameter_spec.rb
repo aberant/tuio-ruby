@@ -3,8 +3,6 @@ require File.join( File.dirname(__FILE__) , 'tuio_parameter_spec' )
 
 # /tuio/2Dobj set s i x y a X Y A m r
 # /tuio/2Dcur set s x y X Y m
-#def initialize( session_id, fiducial_id, x_pos, y_pos, angle, 
-#  x_speed, y_speed, rotation_vector, motion_accel, rotation_accel )
 
 describe TuioObjectParameter do
   

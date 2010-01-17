@@ -2,7 +2,6 @@ require File.join( File.dirname( __FILE__ ), 'tuio_parameter' )
 
 # /tuio/2Dobj set s i x y a X Y A m r
 
-
 class TuioObjectParameter < TuioParameter
   attr_reader :angle, :fiducial_id, :rotation_vector, :rotation_accel
   
