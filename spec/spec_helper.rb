@@ -1,10 +1,6 @@
-require 'rubygems'
-require 'spec'
 require 'osc-ruby'
-
-$: << File.join( File.dirname( __FILE__ ), '..', 'lib' )
-
 require 'tuio-ruby'
+require 'spec'
 
 # monkey patch to get at osc core to send messages
 class TuioClient

@@ -1,5 +1,8 @@
-require File.join( File.dirname( __FILE__ ), '..', 'lib', 'tuio-ruby' )
+require 'rubygems'
+require 'osc-ruby'
 
+$:.unshift( File.join( File.dirname( __FILE__ ), '..', 'lib' ))
+require 'tuio-ruby'
 
 @tc = TuioClient.new
 

@@ -1,5 +1,3 @@
-$: << File.dirname( __FILE__ )
-
 require 'tuio-ruby/tuio_cursor_parameter'
 require 'tuio-ruby/tuio_object_parameter'
 
