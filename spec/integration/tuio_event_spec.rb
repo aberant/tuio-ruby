@@ -79,10 +79,6 @@ describe "tuio object" do
         @server.tuio_objects.size.should == 1
       end
     end
-    
-    describe "fseq" do
-      it "should probably have a test!"
-    end
   end
 end
 
