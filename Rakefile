@@ -35,7 +35,7 @@ begin
     gem.authors = ["aberant"]
     gem.files = FileList['Rakefile', 'examples/**/*', 'lib/**/*'].to_a
     gem.test_files = FileList['spec/**/*.rb']
-    gem.add_dependency('osc-ruby', '>= 0.1.6')
+    gem.add_dependency('osc-ruby', '>= 0.6.2')
     gem.rubyforge_project = "tuio-ruby"
 
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
